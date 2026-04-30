@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rouhin Saha — Mathematician</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --bg2: #12151c;
+      --bg3: #181c26;
+      --border: #252a38;
+      --gold: #c9a84c;
+      --gold-light: #e2c07a;
+      --gold-dim: #8a6f30;
+      --text: #e8e4d9;
+      --text-muted: #8a8577;
+      --text-faint: #4a4740;
+      --accent: #4f7cac;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* ── Graph-paper background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 4rem;
+      background: rgba(13,15,20,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ── SECTIONS ── */
+    section { position: relative; z-index: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 4rem;
+      padding-top: 6rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.2s;
+    }
+
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.4s;
+    }
+    .hero-name span {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .hero-tagline {
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.6s;
+    }
+
+    .hero-math {
+      margin-top: 2.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--text-faint);
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 0.8s;
+    }
+    .hero-math .highlight { color: var(--gold-dim); }
+
+    .hero-cta {
+      margin-top: 3rem;
+      display: flex;
+      gap: 1.2rem;
+      opacity: 0;
+      animation: fadeUp 0.9s ease forwards 1s;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.8rem;
+      border-radius: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--bg);
+      border: 1px solid var(--gold);
+    }
+    .btn-primary:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.2);
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover {
+      border-color: var(--gold-dim);
+      color: var(--gold);
+      transform: translateY(-2px);
+    }
+
+    /* ── Decorative number ── */
+    .hero-deco {
+      position: absolute;
+      right: 4rem;
+      bottom: 12%;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14rem;
+      font-weight: 300;
+      color: rgba(201,168,76,0.04);
+      line-height: 1;
+      user-select: none;
+      pointer-events: none;
+      letter-spacing: -0.05em;
+    }
+
+    /* ── CONTENT WRAPPER ── */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 4rem;
+    }
+
+    /* ── SECTION HEADERS ── */
+    .section-wrap {
+      padding: 7rem 0;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: var(--gold-dim);
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 3.5rem;
+    }
+    .section-title em {
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    /* ── ABOUT / EDUCATION ── */
+    #education { background: var(--bg2); }
+
+    .edu-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .edu-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--gold-dim);
+      padding: 2rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .edu-card:hover {
+      border-left-color: var(--gold);
+      transform: translateY(-3px);
+    }
+    .edu-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.6rem;
+    }
+    .edu-degree {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+    }
+    .edu-institution {
+      font-style: italic;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 0.5rem;
+    }
+    .edu-score {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gold-dim);
+    }
+    .edu-note {
+      margin-top: 0.8rem;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    .achievement-card {
+      display: flex;
+      gap: 2rem;
+      align-items: flex-start;
+      padding: 2rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      transition: border-color 0.2s, background 0.2s;
+      margin-bottom: 1.2rem;
+    }
+    .achievement-card:hover {
+      border-color: var(--gold-dim);
+      background: var(--bg3);
+    }
+    .ach-medal {
+      font-size: 2.5rem;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .ach-year {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.4rem;
+    }
+    .ach-title {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+    .ach-desc { font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ── COURSEWORK ── */
+    #coursework { background: var(--bg2); }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1rem;
+    }
+    .course-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .course-card:hover { border-color: var(--gold-dim); }
+    .course-category {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .course-items {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+    }
+    .course-items li {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      background: rgba(201,168,76,0.05);
+      border: 1px solid rgba(201,168,76,0.1);
+      padding: 0.2rem 0.6rem;
+      border-radius: 1px;
+    }
+
+    /* ── SEMINARS ── */
+    .seminar-list { display: flex; flex-direction: column; gap: 1rem; }
+    .seminar-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding: 1.4rem 1.8rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .seminar-item:hover { border-color: var(--gold-dim); }
+    .seminar-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gold);
+      white-space: nowrap;
+      padding-top: 0.2rem;
+      min-width: 90px;
+    }
+    .seminar-title { font-size: 0.95rem; color: var(--text); }
+    .seminar-org { font-size: 0.85rem; color: var(--text-muted); font-style: italic; margin-top: 0.2rem; }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg2); }
+    .project-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      padding: 2.5rem;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .project-card:hover {
+      border-color: var(--gold-dim);
+      transform: translateY(-4px);
+    }
+    .project-tech {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      margin-bottom: 0.8rem;
+    }
+    .project-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 0.8rem;
+    }
+    .project-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 1.2rem; }
+    .project-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--gold-dim);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      border-bottom: 1px solid var(--gold-dim);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .project-link:hover { color: var(--gold); border-color: var(--gold); }
+
+    /* ── SKILLS ── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .skill-block {
+      padding: 2rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s;
+    }
+    .skill-block:hover { border-color: var(--gold-dim); }
+    .skill-cat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      background: rgba(201,168,76,0.07);
+      border: 1px solid rgba(201,168,76,0.15);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 1px;
+    }
+
+    /* ── CONTACT ── */
+    #contact { border-top: 1px solid var(--border); }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+    .contact-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .contact-text em { color: var(--gold); font-style: italic; }
+    .contact-links { display: flex; flex-direction: column; gap: 1rem; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-item:hover { border-color: var(--gold-dim); background: var(--bg3); }
+    .contact-icon {
+      font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+    }
+    .contact-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      text-transform: uppercase;
+    }
+    .contact-value {
+      margin-left: auto;
+      font-size: 0.9rem;
+      color: var(--gold-dim);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2.5rem;
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--text-faint);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold-dim);
+      margin: 2rem 0;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── HAMBURGER ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+    }
+    .hamburger span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--gold);
+      transition: all 0.3s;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav {
+        padding: 1rem 1.5rem;
+        position: fixed;
+        flex-wrap: wrap;
+      }
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        margin-top: 0.8rem;
+        border-top: 1px solid var(--border);
+        padding-top: 0.5rem;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a {
+        padding: 0.7rem 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 0.8rem;
+      }
+      .container { padding: 0 1.5rem; }
+      #hero { padding: 8rem 1.5rem 4rem; }
+      .edu-grid { grid-template-columns: 1fr; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-deco { font-size: 6rem; right: 1rem; }
+      .hero-cta { flex-direction: column; }
+      .btn { justify-content: center; }
+      .section-wrap { padding: 4rem 0; }
+      .course-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">R. Saha</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#education">Education</a></li>
+      <li><a href="#achievements">Achievements</a></li>
+      <li><a href="#coursework">Coursework</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div style="position:relative; max-width:1100px; margin:0 auto;">
+      <p class="hero-eyebrow">Mathematics · Analysis · Algebra</p>
+      <h1 class="hero-name">Rouhin<br /><span>Saha</span></h1>
+      <p class="hero-tagline">
+        B.Sc. (Hons.) Mathematics student at Ramakrishna Mission Vidyamandira —
+        exploring the structure and beauty of mathematics, from abstract algebra to analysis.
+      </p>
+      <p class="hero-math">
+        <span class="highlight">∀ε &gt; 0 ∃δ &gt; 0</span> : |x − a| &lt; δ ⟹ |f(x) − L| &lt; ε
+      </p>
+      <div class="hero-cta">
+        <a href="https://github.com/Night0Eagle" target="_blank" class="btn btn-primary">
+          ⌥ GitHub
+        </a>
+        <a href="mailto:saharouhin@gmail.com" class="btn btn-ghost">
+          ✉ Get in touch
+        </a>
+      </div>
+      <div class="hero-deco">∑</div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="container section-wrap">
+      <p class="section-label reveal">Formation</p>
+      <h2 class="section-title reveal">Academic <em>Education</em></h2>
+      <div class="edu-grid">
+        <div class="edu-card reveal">
+          <div class="edu-year">2024 — PRESENT</div>
+          <div class="edu-degree">B.Sc. (Hons.) in Mathematics</div>
+          <div class="edu-institution">Ramakrishna Mission Vidyamandira, Belur Math</div>
+          <div class="edu-score">CGPA: 7.975 / 10.0 · 4th Semester</div>
+          <p class="edu-note">Pursuing undergraduate degree from an institution recognized as a 'Centre of Excellence' by UGC.</p>
+        </div>
+        <div class="edu-card reveal">
+          <div class="edu-year">2024</div>
+          <div class="edu-degree">Higher Secondary (Class XII)</div>
+          <div class="edu-institution">Ramakrishna Mission Vidyalaya, Narendrapur, Kolkata</div>
+          <div class="edu-score">88.6% · Science Stream</div>
+        </div>
+        <div class="edu-card reveal">
+          <div class="edu-year">2022</div>
+          <div class="edu-degree">Secondary (Class X)</div>
+          <div class="edu-institution">Birbhum Zilla School, Suri</div>
+          <div class="edu-score">90.28% · WBBSE</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <div class="container section-wrap">
+      <p class="section-label reveal">Distinctions</p>
+      <h2 class="section-title reveal"><em>Achievements</em> &amp; Awards</h2>
+
+      <div class="achievement-card reveal">
+        <div class="ach-medal">🥈</div>
+        <div>
+          <div class="ach-year">2026</div>
+          <div class="ach-title">2nd Position — LIMIT Mathematics Competition</div>
+          <div class="ach-desc">Category C. Competition organized by students and research scholars of the Indian Statistical Institute (ISI), Bangalore.</div>
+        </div>
+      </div>
+
+      <div class="achievement-card reveal">
+        <div class="ach-medal">🎓</div>
+        <div>
+          <div class="ach-year">2025</div>
+          <div class="ach-title">Selected Participant — Madhava Nurture Camp</div>
+          <div class="ach-desc">Intensive program for undergraduate students at IIT Bhubaneswar, focusing on advanced topics in mathematics.</div>
+        </div>
+      </div>
+
+      <div class="achievement-card reveal">
+        <div class="ach-medal">🔐</div>
+        <div>
+          <div class="ach-year">Jan 2026</div>
+          <div class="ach-title">Workshop — Evolving Cryptographic Paradigms</div>
+          <div class="ach-desc">From Classical to Post-Quantum Cryptography. 5-day workshop at Maulana Azad National Institute of Technology Bhopal.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SEMINARS -->
+  <section id="seminars">
+    <div class="container section-wrap" style="padding-top:0">
+      <p class="section-label reveal">Engagements</p>
+      <h2 class="section-title reveal">Seminars &amp; <em>Lectures</em></h2>
+      <div class="seminar-list">
+        <div class="seminar-item reveal">
+          <div class="seminar-date">Jul 2025</div>
+          <div>
+            <div class="seminar-title">Seminar on "Trends in Differential Equations"</div>
+          </div>
+        </div>
+        <div class="seminar-item reveal">
+          <div class="seminar-date">Jul 2025</div>
+          <div>
+            <div class="seminar-title">Interactive Session with Alumnus Dr. Amit Maji</div>
+          </div>
+        </div>
+        <div class="seminar-item reveal">
+          <div class="seminar-date">Apr 2025</div>
+          <div>
+            <div class="seminar-title">Lecture — "Algebraic closures where everything can be solved"</div>
+            <div class="seminar-org">Dr. Sagnik Chakraborty, RKMVERI</div>
+          </div>
+        </div>
+        <div class="seminar-item reveal">
+          <div class="seminar-date">Feb 2025</div>
+          <div>
+            <div class="seminar-title">Lecture — "Introduction to Sequence Spaces"</div>
+            <div class="seminar-org">Dr. Atanu Manna, IICT Bhadohi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSEWORK -->
+  <section id="coursework">
+    <div class="container section-wrap">
+      <p class="section-label reveal">Curriculum</p>
+      <h2 class="section-title reveal">Key <em>Coursework</em></h2>
+      <div class="course-grid">
+        <div class="course-card reveal">
+          <div class="course-category">Algebra</div>
+          <ul class="course-items">
+            <li>Group Theory</li><li>Lagrange's Theorem</li><li>Complex Numbers</li>
+            <li>Theory of Equations</li><li>Inequalities</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-category">Linear Algebra</div>
+          <ul class="course-items">
+            <li>Vector Spaces</li><li>Linear Transformations</li><li>Eigenvalues</li>
+            <li>Inner-Product Spaces</li><li>Cayley-Hamilton</li><li>Quotient Spaces</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-category">Real Analysis</div>
+          <ul class="course-items">
+            <li>Metric Spaces</li><li>Sequences &amp; Series</li><li>Compact Sets</li>
+            <li>Differentiation</li><li>Power Series</li><li>Topology in ℝ</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-category">Differential Equations</div>
+          <ul class="course-items">
+            <li>ODE (1st &amp; Higher Order)</li><li>PDE</li><li>Sturm-Liouville</li>
+            <li>Laplace Transform</li><li>Series Solutions</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-category">Applied Mathematics</div>
+          <ul class="course-items">
+            <li>L.P.P.</li><li>Simplex Method</li><li>Duality</li>
+            <li>Transportation Problems</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-category">Geometry &amp; Mechanics</div>
+          <ul class="course-items">
+            <li>3D Geometry</li><li>Conics</li><li>S.H.M.</li>
+            <li>Central Forces &amp; Orbits</li><li>Planar Motion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container section-wrap">
+      <p class="section-label reveal">Work</p>
+      <h2 class="section-title reveal">Featured <em>Projects</em></h2>
+      <div class="project-card reveal">
+        <div class="project-tech">Python · NumPy · Matplotlib</div>
+        <div class="project-name">Linear Transformation Visualizer</div>
+        <p class="project-desc">
+          Visualizes how 2×2 linear transformations act on a unit square using animated plots.
+          An interactive tool bridging abstract linear algebra with geometric intuition.
+        </p>
+        <a href="https://github.com/Night0Eagle" target="_blank" class="project-link">View on GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container section-wrap" style="padding-top:0">
+      <p class="section-label reveal">Toolkit</p>
+      <h2 class="section-title reveal">Technical <em>Skills</em></h2>
+      <div class="skills-grid">
+        <div class="skill-block reveal">
+          <div class="skill-cat">Programming</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">C</span>
+            <span class="skill-tag">NumPy</span>
+            <span class="skill-tag">Matplotlib</span>
+          </div>
+        </div>
+        <div class="skill-block reveal">
+          <div class="skill-cat">Documentation</div>
+          <div class="skill-tags">
+            <span class="skill-tag">LaTeX</span>
+            <span class="skill-tag">Beamer</span>
+          </div>
+        </div>
+        <div class="skill-block reveal">
+          <div class="skill-cat">Languages</div>
+          <div class="skill-tags">
+            <span class="skill-tag">Bengali (Native)</span>
+            <span class="skill-tag">English (Fluent)</span>
+            <span class="skill-tag">Hindi (Proficient)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container section-wrap">
+      <div class="contact-grid">
+        <div class="reveal">
+          <p class="section-label">Let's connect</p>
+          <p class="contact-text">
+            Interested in mathematics,<br />research, or <em>collaboration?</em>
+          </p>
+          <div class="divider"></div>
+          <p style="color:var(--text-muted); font-size:0.95rem; line-height:1.7;">
+            Currently open to academic opportunities, research discussions, and competitive mathematics.
+          </p>
+        </div>
+        <div class="contact-links reveal">
+          <a href="mailto:saharouhin@gmail.com" class="contact-item">
+            <span class="contact-icon">✉</span>
+            <span class="contact-label">Email</span>
+            <span class="contact-value">saharouhin@gmail.com</span>
+          </a>
+          <a href="https://github.com/Night0Eagle" target="_blank" class="contact-item">
+            <span class="contact-icon">⌥</span>
+            <span class="contact-label">GitHub</span>
+            <span class="contact-value">Night0Eagle</span>
+          </a>
+          <a href="tel:+917063052045" class="contact-item">
+            <span class="contact-icon">✆</span>
+            <span class="contact-label">Phone</span>
+            <span class="contact-value">+91 70630 52045</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>© 2026 Rouhin Saha · Suri, Birbhum, West Bengal · Built with HTML &amp; ♡</p>
+  </footer>
+
+  <script>
+    // Hamburger menu
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navMenu.classList.toggle('open');
+    });
+    // Close menu on link click
+    navMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        navMenu.classList.remove('open');
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
+          const idx = siblings.indexOf(e.target);
+          setTimeout(() => {
+            e.target.classList.add('visible');
+          }, idx * 80);
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(r => observer.observe(r));
+
+    // Active nav link
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 120) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--gold)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
