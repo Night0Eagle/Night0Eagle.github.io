@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO & Open Graph -->
+  <title>Rouhin Saha — Mathematics & Computing</title>
+  <meta name="description" content="Rouhin Saha — B.Sc. Mathematics student at RKM Vidyamandira with a passion for computing, algorithms, and building things." />
+  <meta property="og:title" content="Rouhin Saha — Mathematics & Computing" />
+  <meta property="og:description" content="B.Sc. Mathematics student exploring the intersection of math and computing." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://Night0Eagle.github.io" />
+  <meta name="twitter:card" content="summary" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+
+  <!-- Fonts: Syne (display) + Space Grotesk (body) + JetBrains Mono (code) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg:        #080a0f;
+      --bg2:       #0e1118;
+      --bg3:       #141720;
+      --border:    #1e2330;
+      --border2:   #2a3045;
+      --gold:      #e8b84b;
+      --gold-dim:  #9a7a30;
+      --gold-glow: rgba(232,184,75,0.12);
+      --cyan:      #4ecdc4;
+      --cyan-dim:  #2a8a84;
+      --text:      #edeef2;
+      --text-muted:#7a8099;
+      --text-faint:#323749;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(78,205,196,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(78,205,196,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gold-dim); }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 4rem;
+      background: rgba(8,10,15,0.92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block; width: 22px; height: 1.5px;
+      background: var(--gold);
+      transition: all 0.3s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    section { position: relative; z-index: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 0 4rem;
+      padding-top: 5rem;
+    }
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+    }
+    .hero-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards 0.2s;
+    }
+    .hero-name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 7vw, 6rem);
+      font-weight: 800;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.35s;
+    }
+    .hero-name span { color: var(--gold); }
+    .hero-tagline {
+      margin-top: 1.6rem;
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      line-height: 1.8;
+      font-weight: 300;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.5s;
+    }
+    .hero-interests {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-top: 1.6rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.65s;
+    }
+    .interest-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.08em;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--border); color: var(--text-muted);
+      background: var(--bg2); border-radius: 2px;
+    }
+    .interest-tag.accent { border-color: var(--cyan-dim); color: var(--cyan); background: rgba(78,205,196,0.05); }
+    .hero-cta {
+      display: flex; gap: 1rem; margin-top: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards 0.8s;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.6rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      border-radius: 2px; transition: all 0.22s;
+      cursor: pointer; border: none;
+    }
+    .btn-primary { background: var(--gold); color: var(--bg); font-weight: 500; }
+    .btn-primary:hover { background: #f0cc6a; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(232,184,75,0.25); }
+    .btn-secondary { background: transparent; color: var(--text-muted); border: 1px solid var(--border2); }
+    .btn-secondary:hover { border-color: var(--gold-dim); color: var(--gold); transform: translateY(-2px); }
+    .btn-cyan { background: transparent; color: var(--cyan); border: 1px solid var(--cyan-dim); }
+    .btn-cyan:hover { background: rgba(78,205,196,0.08); transform: translateY(-2px); }
+
+    .hero-deco-block {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; line-height: 1.9;
+      color: var(--text-faint);
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-left: 2px solid var(--cyan-dim);
+      padding: 1.8rem; white-space: pre;
+      opacity: 0;
+      animation: fadeUp 1s ease forwards 1s;
+      min-width: 260px;
+    }
+    .deco-key   { color: var(--cyan); }
+    .deco-val   { color: var(--gold-dim); }
+    .deco-str   { color: #7a9e7e; }
+    .deco-punct { color: var(--text-faint); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 4rem; }
+    .section-wrap { padding: 7rem 0; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; letter-spacing: 0.25em;
+      color: var(--cyan); text-transform: uppercase;
+      margin-bottom: 0.8rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .section-label::after { content: ''; flex: 1; max-width: 60px; height: 1px; background: var(--cyan-dim); }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700; line-height: 1.15;
+      color: var(--text); margin-bottom: 3rem;
+      letter-spacing: -0.01em;
+    }
+    .section-title span { color: var(--gold); }
+
+    /* ── ABOUT ── */
+    #about { background: var(--bg2); }
+    .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 5rem; align-items: start; }
+    .about-text p { color: var(--text-muted); line-height: 1.9; margin-bottom: 1.2rem; font-weight: 300; }
+    .about-text p strong { color: var(--text); font-weight: 500; }
+    .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .stat-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 1.4rem; border-top: 2px solid var(--gold-dim);
+      transition: border-top-color 0.2s;
+    }
+    .stat-card:hover { border-top-color: var(--gold); }
+    .stat-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--gold); line-height: 1; margin-bottom: 0.3rem; }
+    .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.1em; }
+
+    /* ── EDUCATION ── */
+    .edu-grid { display: flex; flex-direction: column; gap: 1rem; }
+    .edu-card {
+      display: grid; grid-template-columns: 140px 1fr;
+      gap: 2rem; align-items: start;
+      padding: 2rem; background: var(--bg2);
+      border: 1px solid var(--border); border-left: 2px solid var(--border2);
+      transition: border-left-color 0.2s, background 0.2s;
+    }
+    .edu-card:hover { border-left-color: var(--gold); background: var(--bg3); }
+    .edu-year { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--gold); letter-spacing: 0.1em; padding-top: 0.2rem; }
+    .edu-degree { font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+    .edu-inst { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.4rem; }
+    .edu-score { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--cyan-dim); }
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace; font-size: 0.62rem;
+      letter-spacing: 0.08em; padding: 0.2rem 0.6rem;
+      background: rgba(232,184,75,0.08); border: 1px solid var(--gold-dim);
+      color: var(--gold); border-radius: 1px; margin-top: 0.5rem;
+    }
+
+    /* ── ACHIEVEMENTS ── */
+    #achievements { background: var(--bg2); }
+    .ach-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .ach-card {
+      padding: 2rem; background: var(--bg3); border: 1px solid var(--border);
+      transition: border-color 0.2s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .ach-card::before {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 100%; height: 2px;
+      background: linear-gradient(90deg, var(--gold), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .ach-card:hover { border-color: var(--border2); transform: translateY(-3px); }
+    .ach-card:hover::before { opacity: 1; }
+    .ach-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+    .ach-year { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--gold); letter-spacing: 0.12em; margin-bottom: 0.5rem; }
+    .ach-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 0.5rem; line-height: 1.3; }
+    .ach-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; }
+
+    /* ── SKILLS ── */
+    .skills-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .skill-card { background: var(--bg2); border: 1px solid var(--border); padding: 1.8rem; transition: border-color 0.2s; }
+    .skill-card:hover { border-color: var(--border2); }
+    .skill-cat {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.68rem;
+      color: var(--cyan); letter-spacing: 0.2em; text-transform: uppercase;
+      margin-bottom: 1.1rem; padding-bottom: 0.8rem; border-bottom: 1px solid var(--border);
+    }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag {
+      font-size: 0.85rem; font-weight: 400;
+      padding: 0.3rem 0.9rem; border-radius: 2px;
+      background: var(--bg3); border: 1px solid var(--border);
+      color: var(--text-muted); transition: border-color 0.2s, color 0.2s;
+    }
+    .skill-tag:hover { border-color: var(--gold-dim); color: var(--text); }
+    .skill-tag.primary { border-color: var(--gold-dim); color: var(--gold); background: rgba(232,184,75,0.06); }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--bg2); }
+    .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .project-card {
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 2rem; transition: border-color 0.2s, transform 0.22s;
+      display: flex; flex-direction: column;
+    }
+    .project-card:hover { border-color: var(--gold-dim); transform: translateY(-4px); }
+    .project-card.coming-soon { opacity: 0.45; }
+    .project-card.coming-soon:hover { transform: none; border-color: var(--border); }
+    .project-stack {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      color: var(--cyan-dim); letter-spacing: 0.1em;
+      margin-bottom: 0.7rem; display: flex; gap: 0.5rem; flex-wrap: wrap;
+    }
+    .project-stack span {
+      background: rgba(78,205,196,0.06); border: 1px solid rgba(78,205,196,0.12);
+      padding: 0.15rem 0.5rem; border-radius: 1px;
+    }
+    .project-name { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.7rem; }
+    .project-desc { font-size: 0.9rem; color: var(--text-muted); line-height: 1.7; flex: 1; }
+    .project-footer {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border);
+    }
+    .project-link {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.7rem;
+      color: var(--gold-dim); text-decoration: none; letter-spacing: 0.1em;
+      transition: color 0.2s;
+    }
+    .project-link:hover { color: var(--gold); }
+    .project-status { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; }
+    .status-live { color: #4ade80; }
+    .status-soon { color: var(--text-faint); }
+
+    /* ── COURSEWORK ── */
+    .course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .course-card { background: var(--bg2); border: 1px solid var(--border); padding: 1.4rem; transition: border-color 0.2s; }
+    .course-card:hover { border-color: var(--border2); }
+    .course-cat {
+      font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+      color: var(--gold); letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 0.8rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border);
+    }
+    .course-items { display: flex; flex-wrap: wrap; gap: 0.35rem; list-style: none; }
+    .course-items li {
+      font-size: 0.8rem; color: var(--text-muted);
+      background: var(--bg3); border: 1px solid var(--border);
+      padding: 0.2rem 0.55rem; border-radius: 1px;
+    }
+
+    /* ── CONTACT ── */
+    #contact { border-top: 1px solid var(--border); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .contact-heading {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 700;
+      line-height: 1.3; color: var(--text); margin-bottom: 1rem;
+    }
+    .contact-heading span { color: var(--gold); }
+    .contact-sub { font-size: 0.95rem; color: var(--text-muted); line-height: 1.8; font-weight: 300; }
+    .contact-items { display: flex; flex-direction: column; gap: 0.8rem; }
+    .contact-item {
+      display: flex; align-items: center; gap: 1.2rem;
+      padding: 1rem 1.4rem; background: var(--bg2);
+      border: 1px solid var(--border); text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .contact-item:hover { border-color: var(--gold-dim); background: var(--bg3); }
+    .c-icon { font-size: 1rem; width: 20px; text-align: center; flex-shrink: 0; }
+    .c-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .c-val { margin-left: auto; font-size: 0.88rem; color: var(--gold-dim); font-family: 'JetBrains Mono', monospace; }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center; padding: 2rem;
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; color: var(--text-faint); letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-deco-block { display: none; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .ach-grid { grid-template-columns: 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .skills-layout { grid-template-columns: 1fr; }
+      .course-grid { grid-template-columns: 1fr 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 1rem 1.5rem; }
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none; flex-direction: column; gap: 0;
+        width: 100%; margin-top: 0.8rem;
+        border-top: 1px solid var(--border); padding-top: 0.4rem;
+      }
+      .nav-links.open { display: flex; }
+      .nav-links a { padding: 0.7rem 0; border-bottom: 1px solid var(--border); font-size: 0.78rem; }
+      .container { padding: 0 1.5rem; }
+      #hero { padding: 7rem 1.5rem 4rem; }
+      .section-wrap { padding: 4.5rem 0; }
+      .hero-cta { flex-direction: column; }
+      .btn { justify-content: center; }
+      .edu-card { grid-template-columns: 1fr; gap: 0.4rem; }
+      .course-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="#hero" class="nav-logo">Rouhin<span>.</span></a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="hero-eyebrow">// Mathematics × Computing</p>
+        <h1 class="hero-name">Rouhin<br /><span>Saha</span></h1>
+        <p class="hero-tagline">
+          I study mathematics and build things with computers.
+          Pursuing B.Sc. (Hons.) at RKM Vidyamandira —
+          passionate about algorithms, code, and the math behind it all.
+        </p>
+        <div class="hero-interests">
+          <span class="interest-tag accent">Python</span>
+          <span class="interest-tag accent">Algorithms</span>
+          <span class="interest-tag accent">Linear Algebra</span>
+          <span class="interest-tag">Analysis</span>
+          <span class="interest-tag">LaTeX</span>
+          <span class="interest-tag">Competitive Math</span>
+        </div>
+        <div class="hero-cta">
+          <a href="https://github.com/Night0Eagle" target="_blank" class="btn btn-primary">GitHub ↗</a>
+          <a href="#projects" class="btn btn-cyan">View Projects</a>
+          <a href="mailto:saharouhin@gmail.com" class="btn btn-secondary">Contact</a>
+        </div>
+      </div>
+      <div class="hero-deco-block"><span class="deco-punct">{</span>
+  <span class="deco-key">"name"</span><span class="deco-punct">:</span>  <span class="deco-str">"Rouhin Saha"</span><span class="deco-punct">,</span>
+  <span class="deco-key">"role"</span><span class="deco-punct">:</span>  <span class="deco-str">"Math + CS Student"</span><span class="deco-punct">,</span>
+  <span class="deco-key">"cgpa"</span><span class="deco-punct">:</span>  <span class="deco-val">7.975</span><span class="deco-punct">,</span>
+  <span class="deco-key">"rank"</span><span class="deco-punct">:</span>  <span class="deco-str">"ISI LIMIT — 2nd"</span><span class="deco-punct">,</span>
+  <span class="deco-key">"langs"</span><span class="deco-punct">:</span> <span class="deco-punct">[</span><span class="deco-str">"Python"</span><span class="deco-punct">,</span> <span class="deco-str">"C"</span><span class="deco-punct">],</span>
+  <span class="deco-key">"open"</span><span class="deco-punct">:</span>  <span class="deco-val">true</span>
+<span class="deco-punct">}</span></div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="container section-wrap">
+      <p class="section-label reveal">Who I am</p>
+      <h2 class="section-title reveal">About <span>Me</span></h2>
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>I'm a mathematics undergraduate at <strong>Ramakrishna Mission Vidyamandira, Belur Math</strong> — a UGC Centre of Excellence. While my degree is in pure math, my real interest lies at the intersection of <strong>mathematics and computing</strong>.</p>
+          <p>I enjoy writing code that makes abstract math visual and tangible — like my Linear Transformation Visualizer. I'm drawn to problems where <strong>algorithms, data structures, and mathematical thinking</strong> come together cleanly.</p>
+          <p>Outside academics I compete in math olympiads (2nd place at ISI's LIMIT competition), explore cryptography, and constantly build small tools to sharpen my CS skills.</p>
+        </div>
+        <div class="about-stats reveal">
+          <div class="stat-card">
+            <div class="stat-num">7.97</div>
+            <div class="stat-label">Current CGPA</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">2nd</div>
+            <div class="stat-label">ISI LIMIT 2026</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">4th</div>
+            <div class="stat-label">Semester (Active)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-num">90%</div>
+            <div class="stat-label">Class X Score</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="container section-wrap">
+      <p class="section-label reveal">Background</p>
+      <h2 class="section-title reveal">Education</h2>
+      <div class="edu-grid">
+        <div class="edu-card reveal">
+          <div class="edu-year">2024 –<br />PRESENT</div>
+          <div>
+            <div class="edu-degree">B.Sc. (Hons.) Mathematics</div>
+            <div class="edu-inst">Ramakrishna Mission Vidyamandira, Belur Math, Howrah</div>
+            <div class="edu-score">CGPA: 7.975 / 10.0 · Semester 4</div>
+            <div class="badge">UGC Centre of Excellence</div>
+          </div>
+        </div>
+        <div class="edu-card reveal">
+          <div class="edu-year">2024</div>
+          <div>
+            <div class="edu-degree">Higher Secondary (Class XII)</div>
+            <div class="edu-inst">Ramakrishna Mission Vidyalaya, Narendrapur, Kolkata</div>
+            <div class="edu-score">88.6% · Science Stream</div>
+          </div>
+        </div>
+        <div class="edu-card reveal">
+          <div class="edu-year">2022</div>
+          <div>
+            <div class="edu-degree">Secondary (Class X)</div>
+            <div class="edu-inst">Birbhum Zilla School, Suri</div>
+            <div class="edu-score">90.28% · WBBSE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACHIEVEMENTS -->
+  <section id="achievements">
+    <div class="container section-wrap">
+      <p class="section-label reveal">Recognition</p>
+      <h2 class="section-title reveal">Achievements <span>&amp; Awards</span></h2>
+      <div class="ach-grid">
+        <div class="ach-card reveal">
+          <div class="ach-icon">🥈</div>
+          <div class="ach-year">2026</div>
+          <div class="ach-title">2nd Position — LIMIT Mathematics Competition</div>
+          <div class="ach-desc">Category C. Organized by students and research scholars of the Indian Statistical Institute (ISI), Bangalore.</div>
+        </div>
+        <div class="ach-card reveal">
+          <div class="ach-icon">🎓</div>
+          <div class="ach-year">2025</div>
+          <div class="ach-title">Selected — Madhava Nurture Camp</div>
+          <div class="ach-desc">Intensive mathematics program for undergraduates at IIT Bhubaneswar. Competitive national selection.</div>
+        </div>
+        <div class="ach-card reveal">
+          <div class="ach-icon">🔐</div>
+          <div class="ach-year">Jan 2026</div>
+          <div class="ach-title">Post-Quantum Cryptography Workshop</div>
+          <div class="ach-desc">5-day workshop on classical to post-quantum cryptography at MANIT Bhopal, Dept. of Mathematics.</div>
+        </div>
+        <div class="ach-card reveal">
+          <div class="ach-icon">📐</div>
+          <div class="ach-year">2025–26</div>
+          <div class="ach-title">Academic Talks &amp; Seminars</div>
+          <div class="ach-desc">Talks on Differential Equations, Sequence Spaces, and Algebraic Closures at various institutions.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="container section-wrap">
+      <p class="section-label reveal">Work</p>
+      <h2 class="section-title reveal">Featured <span>Projects</span></h2>
+      <div class="projects-grid">
+        <div class="project-card reveal">
+          <div class="project-stack">
+            <span>Python</span><span>NumPy</span><span>Matplotlib</span>
+          </div>
+          <div class="project-name">Linear Transformation Visualizer</div>
+          <p class="project-desc">Visualizes how 2×2 linear transformations act on a unit square using animated plots. Bridges abstract linear algebra with geometric intuition — useful for anyone learning matrix operations visually.</p>
+          <div class="project-footer">
+            <a href="https://github.com/Night0Eagle" target="_blank" class="project-link">View on GitHub →</a>
+            <span class="project-status status-live">● Live</span>
+          </div>
+        </div>
+        <div class="project-card coming-soon reveal">
+          <div class="project-stack"><span>Coming Soon</span></div>
+          <div class="project-name">Next Project</div>
+          <p class="project-desc">Something new in the works. Watch the GitHub for updates.</p>
+          <div class="project-footer">
+            <span class="project-link">In progress</span>
+            <span class="project-status status-soon">○ Soon</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="container section-wrap" style="padding-top:0">
+      <p class="section-label reveal">Toolkit</p>
+      <h2 class="section-title reveal">Skills <span>&amp; Tools</span></h2>
+      <div class="skills-layout">
+        <div class="skill-card reveal">
+          <div class="skill-cat">Programming</div>
+          <div class="skill-tags">
+            <span class="skill-tag primary">Python</span>
+            <span class="skill-tag primary">C</span>
+            <span class="skill-tag">NumPy</span>
+            <span class="skill-tag">Matplotlib</span>
+            <span class="skill-tag">Git</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-cat">Mathematics</div>
+          <div class="skill-tags">
+            <span class="skill-tag primary">Linear Algebra</span>
+            <span class="skill-tag primary">Real Analysis</span>
+            <span class="skill-tag">Group Theory</span>
+            <span class="skill-tag">ODEs / PDEs</span>
+            <span class="skill-tag">Optimization</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-cat">Tools &amp; Docs</div>
+          <div class="skill-tags">
+            <span class="skill-tag primary">LaTeX</span>
+            <span class="skill-tag">Beamer</span>
+            <span class="skill-tag">GitHub Pages</span>
+          </div>
+        </div>
+        <div class="skill-card reveal">
+          <div class="skill-cat">Languages</div>
+          <div class="skill-tags">
+            <span class="skill-tag primary">Bengali (Native)</span>
+            <span class="skill-tag primary">English (Fluent)</span>
+            <span class="skill-tag">Hindi (Proficient)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSEWORK -->
+  <section id="coursework">
+    <div class="container section-wrap" style="padding-top:0">
+      <p class="section-label reveal">Curriculum</p>
+      <h2 class="section-title reveal">Key <span>Coursework</span></h2>
+      <div class="course-grid">
+        <div class="course-card reveal">
+          <div class="course-cat">Algebra</div>
+          <ul class="course-items">
+            <li>Group Theory</li><li>Lagrange's Theorem</li>
+            <li>Theory of Equations</li><li>Complex Numbers</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-cat">Linear Algebra</div>
+          <ul class="course-items">
+            <li>Vector Spaces</li><li>Linear Maps</li>
+            <li>Eigenvalues</li><li>Inner Products</li><li>Cayley-Hamilton</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-cat">Real Analysis</div>
+          <ul class="course-items">
+            <li>Metric Spaces</li><li>Sequences &amp; Series</li>
+            <li>Compact Sets</li><li>Power Series</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-cat">Diff. Equations</div>
+          <ul class="course-items">
+            <li>ODE / PDE</li><li>Sturm-Liouville</li>
+            <li>Laplace Transform</li><li>Series Solutions</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-cat">Optimization</div>
+          <ul class="course-items">
+            <li>LPP</li><li>Simplex Method</li>
+            <li>Duality</li><li>Transport Problems</li>
+          </ul>
+        </div>
+        <div class="course-card reveal">
+          <div class="course-cat">Geometry &amp; Mech.</div>
+          <ul class="course-items">
+            <li>3D Geometry</li><li>Conics</li>
+            <li>SHM &amp; Orbits</li><li>Planar Motion</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="container section-wrap">
+      <div class="contact-grid">
+        <div class="reveal">
+          <p class="section-label">Get in touch</p>
+          <h2 class="contact-heading">Let's talk<br /><span>math or code.</span></h2>
+          <p class="contact-sub" style="margin-top:1rem">
+            Open to collaborations, interesting problems, project ideas, or just a good conversation about algorithms or mathematics.
+          </p>
+        </div>
+        <div class="contact-items reveal">
+          <a href="mailto:saharouhin@gmail.com" class="contact-item">
+            <span class="c-icon">✉</span>
+            <span class="c-label">Email</span>
+            <span class="c-val">saharouhin@gmail.com</span>
+          </a>
+          <a href="https://github.com/Night0Eagle" target="_blank" class="contact-item">
+            <span class="c-icon">⌥</span>
+            <span class="c-label">GitHub</span>
+            <span class="c-val">Night0Eagle</span>
+          </a>
+          <a href="tel:+917063052045" class="contact-item">
+            <span class="c-icon">✆</span>
+            <span class="c-label">Phone</span>
+            <span class="c-val">+91 70630 52045</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 Rouhin Saha · Built with HTML, CSS &amp; ⚡ · Suri, Birbhum, West Bengal</p>
+  </footer>
+
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const navMenu   = document.getElementById('nav-links');
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      navMenu.classList.toggle('open');
+    });
+    navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+      hamburger.classList.remove('open');
+      navMenu.classList.remove('open');
+    }));
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const siblings = [...e.target.parentElement.querySelectorAll('.reveal')];
+        const delay = siblings.indexOf(e.target) * 90;
+        setTimeout(() => e.target.classList.add('visible'), delay);
+        observer.unobserve(e.target);
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(r => observer.observe(r));
+
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks  = document.querySelectorAll('.nav-links a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => { if (window.scrollY >= s.offsetTop - 140) current = s.id; });
+      navLinks.forEach(a => {
+        a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--gold)' : '';
+      });
+    });
+  </script>
+</body>
+</html>
