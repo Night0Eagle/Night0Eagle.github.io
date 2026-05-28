@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080a0f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Rouhin Saha — Mathematics &amp; Computing</title>
+<meta name="description" content="Portfolio of Rouhin Saha — undergraduate mathematician at Ramakrishna Mission Vidyamandira.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Space+Grotesk:wght@300;400;500;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ──────────────────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+/* ── Tokens ─────────────────────────────────────────────────────────── */
+:root{
+  --bg:#111319; --surface:#111319; --sb:#080a0f;
+  --se:#0e1118; --sa:#141720; --sv:#33353a;
+  --pr:#ffd57e; --opr:#402d00; --sc:#5dd9d0;
+  --os:#e2e2e9; --osv:#d2c5b0;
+  --tp:#edeef2; --tm:#7a8099; --ov:#4e4636;
+  --gg:rgba(232,184,75,.18); --cg:rgba(78,205,196,.12);
+  --ff-display:"Syne",sans-serif;
+  --ff-body:"Space Grotesk","Segoe UI",system-ui,sans-serif;
+  --ff-mono:"JetBrains Mono","Fira Mono",monospace;
+}
+
+/* ── Base ───────────────────────────────────────────────────────────── */
+body{
+  background-color:var(--bg); color:var(--os);
+  font-family:var(--ff-body);
+  background-image:
+    linear-gradient(rgba(78,205,196,.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(78,205,196,.04) 1px,transparent 1px);
+  background-size:40px 40px;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right);
+}
+a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+button{background:none;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+img,svg{display:block}
+pre{overflow-x:auto}
+
+/* ── Typography helpers ─────────────────────────────────────────────── */
+.eyebrow{
+  font-family:var(--ff-mono);
+  font-size:clamp(.6rem,.85vw,.72rem);
+  letter-spacing:.22em; text-transform:uppercase; line-height:1.5;
+}
+.ui-text{
+  font-family:var(--ff-mono);
+  font-size:clamp(.58rem,.8vw,.7rem);
+  letter-spacing:.12em; text-transform:uppercase;
+}
+.micro{
+  font-family:var(--ff-mono);
+  font-size:clamp(.56rem,.7vw,.62rem);
+  letter-spacing:.08em;
+}
+.hero-title{
+  font-family:var(--ff-display); font-weight:800;
+  line-height:1.05; letter-spacing:-.03em;
+  font-size:clamp(2.4rem,8vw,7rem);
+}
+.section-title{
+  font-family:var(--ff-display); font-weight:700;
+  line-height:1.15; font-size:clamp(1.6rem,3.5vw,2.8rem);
+}
+
+/* ── Colours ────────────────────────────────────────────────────────── */
+.c-pr{color:var(--pr)} .c-sc{color:var(--sc)}
+.c-tp{color:var(--tp)} .c-tm{color:var(--tm)}
+.c-os{color:var(--os)} .c-osv{color:var(--osv)}
+
+/* ── Layout helpers ─────────────────────────────────────────────────── */
+.container{width:100%;max-width:1280px;margin:0 auto}
+.section-pad{padding:5rem 1.25rem}
+@media(min-width:640px){.section-pad{padding:7rem 1.5rem}}
+@media(min-width:768px){.section-pad{padding:7rem 3.5rem}}
+@media(min-width:1024px){.section-pad{padding:7rem 5rem}}
+
+/* ── Cards ──────────────────────────────────────────────────────────── */
+.card{
+  background:var(--se); border:1px solid var(--sv);
+  transition:transform .35s cubic-bezier(.25,.8,.25,1),
+             box-shadow .35s cubic-bezier(.25,.8,.25,1),
+             border-color .35s;
+}
+@media(hover:hover)and(pointer:fine){
+  .card:hover{transform:translateY(-4px);box-shadow:0 8px 30px var(--gg);border-color:var(--pr)}
+}
+.bar-gold{border-left:2px solid var(--pr)}
+.bar-cyan{border-left:2px solid var(--sc)}
+
+/* ── 3-D Cube ───────────────────────────────────────────────────────── */
+.scene{
+  --cs:clamp(120px,28vw,320px);
+  width:var(--cs);height:var(--cs);
+  perspective:1200px; margin:auto;
+}
+.cube{
+  width:100%;height:100%;position:relative;
+  transform-style:preserve-3d;
+  animation:rotateCube 26s infinite linear;
+}
+.face{
+  position:absolute;
+  width:var(--cs);height:var(--cs);
+  border:1px solid var(--pr);
+  background:rgba(8,10,15,.15);
+  box-shadow:inset 0 0 30px var(--gg);
+}
+.f-front {transform:rotateY(  0deg) translateZ(calc(var(--cs)/2))}
+.f-right {transform:rotateY( 90deg) translateZ(calc(var(--cs)/2))}
+.f-back  {transform:rotateY(180deg) translateZ(calc(var(--cs)/2))}
+.f-left  {transform:rotateY(-90deg) translateZ(calc(var(--cs)/2))}
+.f-top   {transform:rotateX( 90deg) translateZ(calc(var(--cs)/2))}
+.f-bot   {transform:rotateX(-90deg) translateZ(calc(var(--cs)/2))}
+@keyframes rotateCube{
+  from{transform:rotateX(0) rotateY(0) rotateZ(0)}
+  to  {transform:rotateX(360deg) rotateY(360deg) rotateZ(360deg)}
+}
+
+/* ── Fade-up ────────────────────────────────────────────────────────── */
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
+.fade-up.in{opacity:1;transform:none}
+
+/* ── Scroll progress ────────────────────────────────────────────────── */
+#prog{
+  position:fixed;top:0;left:0;height:2px;width:0%;
+  background:var(--pr);z-index:200;transition:width .1s linear;
+}
+
+/* ── Navigation ─────────────────────────────────────────────────────── */
+.site-header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(8,10,15,.85);
+  border-bottom:1px solid rgba(78,70,54,.3);
+  -webkit-backdrop-filter:blur(20px) saturate(1.4);
+          backdrop-filter:blur(20px) saturate(1.4);
+}
+.nav-inner{
+  display:flex;align-items:center;justify-content:space-between;
+  height:64px;padding:0 1.25rem;
+  max-width:1280px;margin:0 auto;
+}
+@media(min-width:640px){.nav-inner{padding:0 1.5rem}}
+@media(min-width:768px){.nav-inner{padding:0 3.5rem}}
+@media(min-width:1024px){.nav-inner{padding:0 5rem}}
+
+.logo{
+  font-family:var(--ff-display);color:var(--pr);
+  font-size:1.25rem;font-weight:700;letter-spacing:-.04em;
+  line-height:1;
+}
+.logo span{color:var(--sc)}
+
+.nav-links{display:none;gap:2rem;align-items:center}
+@media(min-width:768px){.nav-links{display:flex}}
+.nav-link{
+  font-family:var(--ff-mono);
+  font-size:clamp(.58rem,.8vw,.7rem);
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--osv);
+  padding-bottom:2px;
+  border-bottom:1px solid transparent;
+  transition:color .2s,border-color .2s;
+}
+.nav-link:hover,.nav-link.active{color:var(--pr);border-color:var(--pr)}
+.nav-link.active{font-weight:700}
+
+.btn-connect{
+  display:none;
+  font-family:var(--ff-mono);
+  font-size:clamp(.58rem,.8vw,.7rem);
+  letter-spacing:.12em;text-transform:uppercase;
+  background:var(--pr);color:var(--opr);
+  padding:.5rem 1.25rem;
+  transition:box-shadow .3s;
+}
+.btn-connect:hover{box-shadow:0 0 18px var(--gg)}
+@media(min-width:768px){.btn-connect{display:inline-flex;align-items:center}}
+
+/* Hamburger */
+.ham-btn{
+  display:flex;flex-direction:column;justify-content:center;
+  gap:6px;width:40px;height:40px;padding:8px;
+}
+@media(min-width:768px){.ham-btn{display:none}}
+.ham-line{
+  display:block;width:22px;height:2px;
+  background:var(--pr);border-radius:2px;
+  transition:transform .3s ease,opacity .3s ease;
+}
+.ham-btn.open .ham-line:nth-child(1){transform:translateY(8px) rotate(45deg)}
+.ham-btn.open .ham-line:nth-child(2){opacity:0;transform:scaleX(0)}
+.ham-btn.open .ham-line:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+/* Mobile dropdown */
+.mob-menu{
+  max-height:0;overflow:hidden;opacity:0;pointer-events:none;
+  background:rgba(8,10,15,.98);
+  border-top:1px solid rgba(78,70,54,.2);
+  transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;
+}
+.mob-menu.open{max-height:480px;opacity:1;pointer-events:auto}
+@media(min-width:768px){.mob-menu{display:none!important}}
+.mob-links{display:flex;flex-direction:column;padding:0 1.25rem 1.5rem 1.25rem}
+.mob-link{
+  font-family:var(--ff-mono);
+  font-size:clamp(.6rem,.85vw,.7rem);
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--osv);
+  padding:14px 0;
+  border-bottom:1px solid rgba(51,53,58,.4);
+  transition:color .2s;
+  display:flex;align-items:center;
+}
+.mob-link:last-child{border-bottom:none}
+.mob-link:hover{color:var(--pr)}
+.mob-connect{
+  margin-top:1.25rem;
+  background:var(--pr);color:var(--opr);
+  font-family:var(--ff-mono);
+  font-size:clamp(.6rem,.85vw,.7rem);
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:.75rem 1.5rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:box-shadow .3s;
+}
+
+/* ── Hero ───────────────────────────────────────────────────────────── */
+#home{
+  position:relative;z-index:10;
+  min-height:100svh;
+  display:flex;align-items:center;justify-content:center;
+  padding-top:64px;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(60% 60% at 50% 40%,rgba(255,213,126,.08),transparent 70%);
+}
+.hero-inner{
+  position:relative;z-index:1;
+  text-align:center;
+  padding:0 1.25rem;
+  max-width:900px;margin:0 auto;
+  display:flex;flex-direction:column;align-items:center;width:100%;
+}
+.hero-eyebrow{margin-bottom:1.25rem}
+.hero-sub{
+  margin-top:1.5rem;max-width:42rem;
+  font-size:clamp(.95rem,2vw,1.125rem);
+  line-height:1.75;font-weight:300;color:var(--osv);
+}
+.hero-btns{
+  margin-top:2rem;
+  display:flex;flex-direction:column;gap:.75rem;
+  width:100%;max-width:320px;
+}
+@media(min-width:480px){
+  .hero-btns{flex-direction:row;max-width:none;width:auto}
+  .hero-sub{margin-top:2rem}
+}
+.btn-primary{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--pr);color:var(--opr);
+  font-family:var(--ff-mono);
+  font-size:clamp(.58rem,.8vw,.7rem);
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:.75rem 2rem;
+  transition:box-shadow .3s;
+}
+.btn-primary:hover{box-shadow:0 0 20px var(--gg)}
+.btn-secondary{
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--sc);color:var(--sc);
+  font-family:var(--ff-mono);
+  font-size:clamp(.58rem,.8vw,.7rem);
+  letter-spacing:.12em;text-transform:uppercase;
+  padding:.75rem 2rem;
+  transition:background .3s;
+}
+.btn-secondary:hover{background:var(--cg)}
+.hero-meta{
+  margin-top:2.5rem;
+  display:flex;flex-wrap:wrap;justify-content:center;
+  gap:.35rem .75rem;
+  color:var(--tm);
+}
+.hero-dot{color:rgba(255,213,126,.4)}
+.bounce{
+  position:absolute;bottom:1.5rem;left:50%;transform:translateX(-50%);
+  opacity:.4;animation:bounce 2s infinite;
+}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+
+/* ── About ──────────────────────────────────────────────────────────── */
+.about-grid{
+  display:grid;grid-template-columns:1fr;gap:2.5rem;align-items:start;
+}
+@media(min-width:768px){
+  .about-grid{grid-template-columns:5fr 7fr;gap:3rem}
+}
+.about-text{display:flex;flex-direction:column;gap:1.25rem}
+.divider{width:3rem;height:3px;background:var(--pr)}
+.about-prose{color:var(--osv);line-height:1.75;font-size:clamp(.875rem,1.5vw,1rem)}
+.code-block{
+  background:var(--sa);border:1px solid var(--sv);
+  padding:1rem 1.25rem;
+  color:var(--sc);font-family:var(--ff-mono);font-size:.75rem;
+  overflow-x:auto;
+}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:479px){.stat-grid{grid-template-columns:1fr}}
+.stat-card{padding:1.5rem}
+@media(min-width:640px){.stat-card{padding:2rem}}
+.stat-label{margin-bottom:.5rem}
+.stat-value{
+  font-family:var(--ff-display);font-weight:700;
+  color:var(--pr);font-size:clamp(1.75rem,4vw,2.5rem);
+}
+.stat-value.sc{color:var(--sc)}
+.stat-sub{font-family:var(--ff-mono);font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tm);margin-top:.25rem}
+.stat-wide{grid-column:span 2}
+@media(max-width:479px){.stat-wide{grid-column:span 1}}
+.stat-wide-inner{display:flex;flex-direction:column;gap:.75rem;padding:1.25rem}
+@media(min-width:480px){.stat-wide-inner{flex-direction:row;justify-content:space-between;align-items:center;padding:1.5rem 2rem}}
+.stat-focus-title{color:var(--tp);font-size:clamp(1rem,2vw,1.125rem);margin-bottom:.25rem}
+.stat-focus-sub{color:var(--tm);font-size:.875rem}
+.lang-row{display:flex;flex-wrap:wrap;gap:1.25rem 1.5rem}
+.lang-name{color:var(--tp)}
+.lang-level{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--sc)}
+
+/* ── Timeline ───────────────────────────────────────────────────────── */
+.tl-section{background:rgba(20,23,32,.6);border-top:1px solid var(--sv);border-bottom:1px solid var(--sv)}
+.tl-list{
+  position:relative;
+  border-left:2px solid rgba(78,70,54,.3);
+  margin-left:7px;
+  display:flex;flex-direction:column;gap:2rem;
+}
+@media(min-width:768px){.tl-list{margin-left:0}}
+.tl-item{position:relative;padding-left:1.5rem}
+@media(min-width:768px){
+  .tl-item{
+    display:grid;grid-template-columns:3fr 9fr;gap:2rem;
+    padding-left:0;align-items:start;
+  }
+}
+.tl-period{margin-bottom:.5rem}
+@media(min-width:768px){.tl-period{text-align:right;padding-right:1.5rem;padding-top:.25rem;margin-bottom:0}}
+.tl-card{padding:1.25rem 1.5rem;position:relative}
+.tl-dot{
+  position:absolute;top:1.5rem;left:-21px;
+  width:10px;height:10px;border-radius:50%;
+}
+@media(min-width:768px){.tl-dot{left:-14px}}
+.dot-gold{background:var(--pr)}
+.dot-cyan{background:var(--sc)}
+.tl-title{color:var(--tp);font-size:clamp(.875rem,1.5vw,1.125rem);margin-bottom:.25rem}
+.tl-place{color:var(--osv);font-size:.875rem;margin-bottom:.5rem}
+.tl-detail{color:var(--tm);font-size:.875rem;line-height:1.6}
+.extra-grid{display:grid;grid-template-columns:1fr;gap:1.25rem;margin-top:3rem}
+@media(min-width:768px){.extra-grid{grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:4rem}}
+.extra-card{padding:1.25rem 1.5rem}
+.seminar-list{display:flex;flex-direction:column;gap:.75rem;margin-top:.75rem}
+.seminar-row{display:flex;gap:.75rem}
+@media(max-width:420px){.seminar-row{flex-direction:column;gap:.2rem}}
+.seminar-date{font-family:var(--ff-mono);font-size:.7rem;color:var(--pr);width:4.5rem;flex-shrink:0}
+.seminar-text{color:var(--osv);font-size:.8rem;line-height:1.5}
+.award-list{display:flex;flex-direction:column;gap:.75rem;margin-top:.75rem}
+.award-title{color:var(--tp);font-size:.875rem}
+.award-desc{color:var(--tm);font-size:.8rem;line-height:1.5;margin-top:.2rem}
+
+/* ── Projects ───────────────────────────────────────────────────────── */
+.proj-header{
+  display:flex;flex-direction:column;gap:1rem;margin-bottom:2.5rem;
+}
+@media(min-width:640px){
+  .proj-header{flex-direction:row;justify-content:space-between;align-items:flex-end}
+}
+.proj-grid{display:grid;grid-template-columns:1fr;gap:1.25rem}
+@media(min-width:768px){.proj-grid{grid-template-columns:1fr 1fr}}
+.proj-card{
+  display:flex;flex-direction:column;
+  background:var(--se);border:1px solid var(--sv);overflow:hidden;
+  transition:transform .35s cubic-bezier(.25,.8,.25,1),
+             box-shadow .35s,border-color .35s;
+}
+@media(hover:hover)and(pointer:fine){
+  .proj-card:hover{transform:translateY(-4px);box-shadow:0 8px 30px var(--gg);border-color:var(--pr)}
+}
+.proj-thumb{
+  height:10rem;background:var(--sv);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+  border-bottom:1px solid var(--sv);
+}
+@media(min-width:640px){.proj-thumb{height:12rem}}
+.proj-thumb-grad{position:absolute;inset:0;opacity:.5}
+.proj-icon{position:relative;z-index:1;opacity:.4;transition:opacity .3s}
+.proj-card:hover .proj-icon{opacity:1}
+.proj-tags{
+  position:absolute;top:.75rem;right:.75rem;z-index:2;
+  display:flex;flex-wrap:wrap;gap:.35rem;
+}
+.tag{
+  font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.08em;
+  padding:.2rem .5rem;
+  border:1px solid rgba(255,213,126,.2);
+  background:rgba(17,19,25,.8);color:var(--pr);
+  -webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+}
+.tag.sc{border-color:rgba(93,217,208,.2);color:var(--sc)}
+.proj-body{padding:1.5rem 2rem;flex-grow:1;display:flex;flex-direction:column}
+.proj-title{color:var(--tp);font-size:clamp(1rem,1.8vw,1.25rem);margin-bottom:.75rem;transition:color .3s}
+.proj-card:hover .proj-title{color:var(--pr)}
+.proj-desc{color:var(--osv);font-size:.875rem;line-height:1.7;flex-grow:1;margin-bottom:1.25rem}
+.proj-link{
+  font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--pr);border-bottom:1px solid transparent;
+  padding-bottom:2px;align-self:flex-start;
+  transition:border-color .2s;
+}
+.proj-card:hover .proj-link{border-color:var(--pr)}
+
+/* ── Skills ─────────────────────────────────────────────────────────── */
+.chip-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem .6rem;max-width:56rem;margin:0 auto 5rem}
+@media(min-width:640px){.chip-grid{gap:.6rem .75rem}}
+.chip{
+  display:inline-flex;align-items:center;gap:.5rem;
+  border-radius:9999px;
+  background:var(--se);border:1px solid var(--sv);
+  color:var(--tp);
+  font-family:var(--ff-mono);font-size:clamp(.58rem,.8vw,.7rem);letter-spacing:.12em;text-transform:uppercase;
+  padding:.5rem 1.1rem;
+  cursor:default;
+  transition:background .2s,border-color .2s;
+}
+.chip:hover{background:var(--sa)}
+.chip-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.chip.gold:hover{border-color:var(--pr)}
+.chip.cyan:hover{border-color:var(--sc)}
+.cw-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:480px){.cw-grid{grid-template-columns:1fr 1fr}}
+@media(min-width:768px){.cw-grid{grid-template-columns:1fr 1fr 1fr}}
+.cw-card{padding:1rem 1.25rem}
+.cw-title{font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--pr);margin-bottom:.5rem}
+.cw-items{color:var(--osv);font-size:.8rem;line-height:1.6}
+
+/* ── Contact ────────────────────────────────────────────────────────── */
+.contact-grid{display:grid;grid-template-columns:1fr;gap:1rem}
+@media(min-width:480px){.contact-grid{grid-template-columns:1fr 1fr}}
+.contact-card{
+  display:flex;align-items:center;gap:1rem;
+  padding:1.25rem 1.5rem;
+}
+.contact-icon{flex-shrink:0;color:var(--pr)}
+.contact-icon.sc{color:var(--sc)}
+.contact-label{margin-bottom:.2rem}
+.contact-val{color:var(--tp);font-size:clamp(.8rem,1.5vw,.9rem);word-break:break-all}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+footer{
+  position:relative;z-index:10;
+  background:var(--sb);border-top:1px solid rgba(78,70,54,.2);
+  padding:2rem 1.25rem max(2rem,env(safe-area-inset-bottom));
+  display:flex;flex-direction:column;align-items:center;gap:1rem;
+  text-align:center;
+}
+@media(min-width:768px){
+  footer{flex-direction:row;justify-content:space-between;padding:2.5rem 5rem;text-align:left}
+}
+.footer-logo{font-family:var(--ff-display);color:var(--os);font-size:1.125rem}
+.footer-logo span{color:var(--pr)}
+.footer-links{display:flex;gap:1.25rem}
+.footer-link{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);transition:color .2s}
+.footer-link:hover{color:var(--pr)}
+.footer-copy{font-family:var(--ff-mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+
+/* ── Section header ─────────────────────────────────────────────────── */
+.section-hd{margin-bottom:2.5rem}
+.section-hd.center{text-align:center}
+.section-hd.center .divider{margin:1rem auto 0}
+.section-hd .divider{margin-top:1rem}
+
+/* ── Reduced motion ─────────────────────────────────────────────────── */
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .cube{animation:none!important;transform:rotateX(25deg) rotateY(35deg)}
+  .fade-up{opacity:1!important;transform:none!important;transition:none!important}
+  .proj-card,.card{transition:none!important}
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ── Background cube ─────────────────────────────────────────────── -->
+<div aria-hidden="true" style="position:fixed;inset:0;z-index:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:.18">
+  <div class="scene">
+    <div class="cube">
+      <div class="face f-front"></div>
+      <div class="face f-right"></div>
+      <div class="face f-back"></div>
+      <div class="face f-left"></div>
+      <div class="face f-top"></div>
+      <div class="face f-bot"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Scroll progress ──────────────────────────────────────────────── -->
+<div id="prog" role="progressbar" aria-label="Reading progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
+<!-- ── Header / Nav ────────────────────────────────────────────────── -->
+<header class="site-header">
+  <div class="nav-inner">
+    <a href="#home" class="logo">Rouhin<span>.</span></a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="#home"     class="nav-link">Home</a>
+      <a href="#about"    class="nav-link">About</a>
+      <a href="#timeline" class="nav-link">Timeline</a>
+      <a href="#projects" class="nav-link">Projects</a>
+      <a href="#skills"   class="nav-link">Skills</a>
+      <a href="#contact"  class="nav-link">Contact</a>
+    </nav>
+    <a href="#contact" class="btn-connect">Connect</a>
+    <button id="hamBtn" class="ham-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mobMenu">
+      <span class="ham-line"></span>
+      <span class="ham-line"></span>
+      <span class="ham-line"></span>
+    </button>
+  </div>
+  <div id="mobMenu" class="mob-menu" aria-hidden="true">
+    <div class="mob-links">
+      <a href="#home"     class="mob-link">Home</a>
+      <a href="#about"    class="mob-link">About</a>
+      <a href="#timeline" class="mob-link">Timeline</a>
+      <a href="#projects" class="mob-link">Projects</a>
+      <a href="#skills"   class="mob-link">Skills</a>
+      <a href="#contact"  class="mob-link">Contact</a>
+      <a href="#contact"  class="mob-link mob-connect">Connect</a>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  HERO                                                              -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<section id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <p class="eyebrow c-sc hero-eyebrow">Mathematics × Computing · Undergraduate Researcher</p>
+    <h1 class="hero-title c-tp">Rouhin Saha</h1>
+    <p class="hero-sub">
+      Exploring the intersection of elegant mathematics and rigorous computation — from algebraic structures and real analysis to cryptographic paradigms and algorithm design.
+    </p>
+    <div class="hero-btns">
+      <a href="#projects" class="btn-primary">View Proof of Work</a>
+      <a href="#contact"  class="btn-secondary">Initialize Contact</a>
+    </div>
+    <div class="hero-meta micro">
+      <span>SURI · BIRBHUM · WEST BENGAL</span>
+      <span class="hero-dot">●</span>
+      <span>RKM VIDYAMANDIRA · BELUR MATH</span>
+      <span class="hero-dot">●</span>
+      <span>CGPA 7.975 / 10</span>
+    </div>
+  </div>
+  <div class="bounce" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffd57e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  ABOUT                                                             -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<section id="about" class="section-pad fade-up" style="position:relative;z-index:10">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text">
+        <p class="eyebrow c-sc">01 · Identity</p>
+        <h2 class="section-title c-tp">The Mathematical Identity</h2>
+        <div class="divider"></div>
+        <p class="about-prose">
+          I approach computing through the rigorous lens of mathematics. Every function is a theorem, every program a proof. My undergraduate work at Ramakrishna Mission Vidyamandira centres on algebra, analysis and computational theory — translating abstraction into precise, performant code.
+        </p>
+        <div class="code-block">
+<pre>{
+  "entity": "Rouhin Saha",
+  "domain": ["Mathematics", "Computing"],
+  "institution": "RKM Vidyamandira, Belur Math",
+  "status": "Active Research · 4th semester",
+  "precision_level": "High"
+}</pre>
+        </div>
+      </div>
+      <div class="stat-grid">
+        <div class="card bar-gold stat-card">
+          <p class="eyebrow c-osv stat-label">Academic Metric</p>
+          <p class="stat-value">7.975</p>
+          <p class="stat-sub">Cumulative GPA / 10</p>
+        </div>
+        <div class="card bar-cyan stat-card">
+          <p class="eyebrow c-osv stat-label">Competitive Standing</p>
+          <p class="stat-value sc">2nd</p>
+          <p class="stat-sub">LIMIT · ISI Bangalore 2026</p>
+        </div>
+        <div class="card bar-gold stat-wide">
+          <div class="stat-wide-inner">
+            <div>
+              <p class="eyebrow c-osv" style="margin-bottom:.375rem">Primary Focus</p>
+              <p class="stat-focus-title">Computational Mathematics &amp; Algorithm Design</p>
+              <p class="stat-focus-sub">Algebra · Analysis · Cryptography · Optimization</p>
+            </div>
+            <svg aria-hidden="true" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="rgba(255,213,126,.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
+              <path d="M3 12h18M12 3l4 9-4 9M12 3l-4 9 4 9"/>
+            </svg>
+          </div>
+        </div>
+        <div class="card bar-cyan stat-wide" style="padding:1.25rem 1.5rem">
+          <p class="eyebrow c-osv" style="margin-bottom:.625rem">Languages</p>
+          <div class="lang-row">
+            <div><p class="lang-name">Bengali</p><p class="lang-level">Native</p></div>
+            <div><p class="lang-name">English</p><p class="lang-level">Fluent</p></div>
+            <div><p class="lang-name">Hindi</p><p class="lang-level">Proficient</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  TIMELINE                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<section id="timeline" class="tl-section section-pad fade-up" style="position:relative;z-index:10">
+  <div class="container">
+    <div class="section-hd center">
+      <p class="eyebrow c-sc" style="margin-bottom:.75rem">02 · Trajectory</p>
+      <h2 class="section-title c-tp">Academic Trajectory</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="tl-list" id="tlList"></div>
+    <div class="extra-grid">
+      <div class="extra-card card bar-cyan">
+        <p class="eyebrow c-sc" style="margin-bottom:.5rem">Seminars &amp; Lectures</p>
+        <ul class="seminar-list" id="semList"></ul>
+      </div>
+      <div class="extra-card card bar-gold">
+        <p class="eyebrow c-pr" style="margin-bottom:.5rem">Awards &amp; Recognition</p>
+        <div class="award-list">
+          <div><p class="award-title">2nd Position · LIMIT 2026 (Category C)</p><p class="award-desc">Indian Statistical Institute, Bangalore — competition organised by ISI students and research scholars.</p></div>
+          <div><p class="award-title">Selected · Madhava Nurture Camp 2025</p><p class="award-desc">IIT Bhubaneswar — intensive program for undergraduate mathematicians.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  PROJECTS                                                          -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<section id="projects" class="section-pad fade-up" style="position:relative;z-index:10">
+  <div class="container">
+    <div class="proj-header">
+      <div>
+        <p class="eyebrow c-sc" style="margin-bottom:.75rem">03 · Proof of Work</p>
+        <h2 class="section-title c-tp">Projects</h2>
+        <div class="divider"></div>
+      </div>
+      <a href="https://github.com/Night0Eagle" target="_blank" rel="noopener noreferrer"
+        style="display:inline-flex;align-items:center;gap:.5rem;font-family:var(--ff-mono);font-size:.65rem;letter-spacing:.12em;text-transform:uppercase;color:var(--sc);transition:color .2s"
+        onmouseover="this.style.color='var(--pr)'" onmouseout="this.style.color='var(--sc)'">
+        View All Repositories
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+    <div class="proj-grid">
+      <!-- Project 1 -->
+      <a href="https://github.com/Night0Eagle" target="_blank" rel="noopener noreferrer" class="proj-card">
+        <div class="proj-thumb">
+          <div class="proj-thumb-grad" style="background:linear-gradient(135deg,var(--sv),var(--sa))"></div>
+          <svg class="proj-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ffd57e" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <div class="proj-tags">
+            <span class="tag">Python</span>
+            <span class="tag sc">NumPy</span>
+            <span class="tag">Matplotlib</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <h3 class="proj-title">Linear Transformation Visualizer</h3>
+          <p class="proj-desc">An interactive tool that visualises how 2×2 linear transformations act on a unit square using animated plots — built to develop geometric intuition for vector calculus and linear algebra.</p>
+          <span class="proj-link">View Source →</span>
+        </div>
+      </a>
+      <!-- Project 2 -->
+      <a href="https://github.com/Night0Eagle" target="_blank" rel="noopener noreferrer" class="proj-card">
+        <div class="proj-thumb">
+          <div class="proj-thumb-grad" style="background:linear-gradient(225deg,var(--sv),var(--sa))"></div>
+          <svg class="proj-icon" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#5dd9d0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+          <div class="proj-tags">
+            <span class="tag">Cryptography</span>
+            <span class="tag sc">C</span>
+          </div>
+        </div>
+        <div class="proj-body">
+          <h3 class="proj-title">Cryptographic Paradigms · Study Repo</h3>
+          <p class="proj-desc">Notes, implementations and proofs explored during the 5-day MANIT Bhopal workshop on classical to post-quantum cryptography — RSA, lattice-based schemes and zero-knowledge primitives.</p>
+          <span class="proj-link">View Source →</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  SKILLS                                                            -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<section id="skills" class="section-pad fade-up" style="position:relative;z-index:10">
+  <div class="container">
+    <div class="section-hd center">
+      <p class="eyebrow c-sc" style="margin-bottom:.75rem">04 · Toolkit</p>
+      <h2 class="section-title c-tp">Computational Toolkit</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="chip-grid" id="chips"></div>
+    <p class="eyebrow c-sc" style="text-align:center;margin-bottom:1.5rem">Key Coursework</p>
+    <div class="cw-grid" id="cwGrid"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<!--  CONTACT                                                           -->
+<!-- ══════════════════════════════════════════════════════════════════ -->
+<section id="contact" class="section-pad fade-up" style="position:relative;z-index:10">
+  <div class="container" style="max-width:800px">
+    <div class="section-hd center">
+      <p class="eyebrow c-sc" style="margin-bottom:.75rem">05 · Initialize</p>
+      <h2 class="section-title c-tp">Let's Compute Together</h2>
+      <div class="divider"></div>
+      <p style="color:var(--osv);margin-top:1.25rem;max-width:36rem;margin-left:auto;margin-right:auto;font-size:clamp(.875rem,1.5vw,1rem)">
+        Open to research collaboration, summer programs, and conversations about mathematics, cryptography or computation.
+      </p>
+    </div>
+    <div class="contact-grid">
+      <a href="mailto:saharouhin@gmail.com" class="contact-card card bar-gold">
+        <div class="contact-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow c-osv" style="margin-bottom:.25rem">Email</p>
+          <p class="contact-val">saharouhin@gmail.com</p>
+        </div>
+      </a>
+      <a href="tel:+917063052045" class="contact-card card bar-cyan">
+        <div class="contact-icon sc">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow c-osv" style="margin-bottom:.25rem">Phone</p>
+          <p class="contact-val">+91 70630 52045</p>
+        </div>
+      </a>
+      <a href="https://github.com/Night0Eagle" target="_blank" rel="noopener noreferrer" class="contact-card card bar-cyan">
+        <div class="contact-icon sc">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow c-osv" style="margin-bottom:.25rem">GitHub</p>
+          <p class="contact-val">github.com/Night0Eagle</p>
+        </div>
+      </a>
+      <a href="https://night0eagle.github.io" target="_blank" rel="noopener noreferrer" class="contact-card card bar-gold">
+        <div class="contact-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="eyebrow c-osv" style="margin-bottom:.25rem">Website</p>
+          <p class="contact-val">night0eagle.github.io</p>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ──────────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">Rouhin<span>.</span></div>
+  <div class="footer-links">
+    <a href="https://github.com/Night0Eagle" class="footer-link">Github</a>
+    <a href="https://night0eagle.github.io" class="footer-link">Website</a>
+    <a href="mailto:saharouhin@gmail.com" class="footer-link">Email</a>
+  </div>
+  <p class="footer-copy">© <span id="yr"></span> Rouhin Saha · Built with mathematical precision.</p>
+</footer>
+
+<script>
+/* ── Year ──────────────────────────────────────────────────────────── */
+document.getElementById("yr").textContent = new Date().getFullYear();
+
+/* ── Mobile menu ───────────────────────────────────────────────────── */
+var btn = document.getElementById("hamBtn");
+var menu = document.getElementById("mobMenu");
+function closeMenu() {
+  menu.classList.remove("open");
+  btn.classList.remove("open");
+  btn.setAttribute("aria-expanded","false");
+  btn.setAttribute("aria-label","Open menu");
+  menu.setAttribute("aria-hidden","true");
+}
+function openMenu() {
+  menu.classList.add("open");
+  btn.classList.add("open");
+  btn.setAttribute("aria-expanded","true");
+  btn.setAttribute("aria-label","Close menu");
+  menu.setAttribute("aria-hidden","false");
+}
+btn.addEventListener("click", function(e){ e.stopPropagation(); menu.classList.contains("open") ? closeMenu() : openMenu(); });
+document.querySelectorAll(".mob-link").forEach(function(l){ l.addEventListener("click", closeMenu); });
+document.addEventListener("click", function(e){ if(!btn.contains(e.target)&&!menu.contains(e.target)) closeMenu(); });
+document.addEventListener("keydown", function(e){ if(e.key==="Escape") closeMenu(); });
+
+/* ── Timeline data ─────────────────────────────────────────────────── */
+var tl = [
+  {p:"2024 — Present",a:"gold",t:"B.Sc. (Hons.) Mathematics",pl:"Ramakrishna Mission Vidyamandira, Belur Math",d:"Currently pursuing 4th semester · CGPA 7.975 / 10. Centre of Excellence (UGC)."},
+  {p:"27–31 Jan 2026",a:"cyan",t:"Workshop · Evolving Cryptographic Paradigms",pl:"MANIT Bhopal — Mathematics, Bioinformatics & CS",d:"5-day workshop on classical to post-quantum cryptography. Certificate awarded."},
+  {p:"2026",a:"gold",t:"2nd Position — LIMIT (Category C)",pl:"Indian Statistical Institute, Bangalore",d:"Secured 2nd rank in the LIMIT Mathematics Competition organised by the students and research scholars of ISI Bangalore."},
+  {p:"2025",a:"cyan",t:"Participant · Madhava Nurture Camp",pl:"IIT Bhubaneswar",d:"Selected for an intensive undergraduate program focusing on advanced topics in mathematics."},
+  {p:"2024",a:"gold",t:"Higher Secondary (Class XII)",pl:"Ramakrishna Mission Vidyalaya, Narendrapur · 88.6%",d:"Specialised in the Science stream."},
+  {p:"2022",a:"cyan",t:"Secondary (Class X)",pl:"Birbhum Zilla School, Suri · 90.28%",d:"Completed secondary education under WBBSE."}
+];
+document.getElementById("tlList").innerHTML = tl.map(function(x){
+  return '<div class="tl-item">'
+    +'<div class="tl-period"><span class="eyebrow '+(x.a==="gold"?"c-pr":"c-sc")+'">'+x.p+'</span></div>'
+    +'<div class="tl-card card '+(x.a==="gold"?"bar-gold":"bar-cyan")+'">'
+    +'<div class="tl-dot '+(x.a==="gold"?"dot-gold":"dot-cyan")+'" aria-hidden="true"></div>'
+    +'<p class="tl-title">'+x.t+'</p>'
+    +'<p class="tl-place">'+x.pl+'</p>'
+    +'<p class="tl-detail">'+x.d+'</p>'
+    +'</div></div>';
+}).join("");
+
+/* ── Seminars data ─────────────────────────────────────────────────── */
+var sems = [
+  ["Jul 2025","Seminar — \"Trends in Differential Equations\""],
+  ["Jul 2025","Interactive Session with alumnus Dr. Amit Maji"],
+  ["Apr 2025","Lecture — \"Algebraic closures where everything can be solved\" (Dr. Sagnik Chakraborty, RKMVERI)"],
+  ["Feb 2025","Lecture — \"Introduction to Sequence Spaces\" (Dr. Atanu Manna, IICT Bhadohi)"]
+];
+document.getElementById("semList").innerHTML = sems.map(function(s){
+  return '<li class="seminar-row"><span class="seminar-date">'+s[0]+'</span><span class="seminar-text">'+s[1]+'</span></li>';
+}).join("");
+
+/* ── Skills data ───────────────────────────────────────────────────── */
+var skills = [
+  ["Python","gold"],["C","cyan"],["LaTeX","gold"],["NumPy","cyan"],["Matplotlib","gold"],
+  ["Linear Algebra","cyan"],["Real Analysis","gold"],["Differential Equations","cyan"],
+  ["Cryptography","gold"],["Optimization","cyan"]
+];
+document.getElementById("chips").innerHTML = skills.map(function(s){
+  return '<div class="chip '+s[1]+'">'
+    +'<span class="chip-dot" style="background:'+(s[1]==="gold"?"var(--pr)":"var(--sc)")+'"></span>'
+    +s[0]+'</div>';
+}).join("");
+
+/* ── Coursework data ───────────────────────────────────────────────── */
+var cw = [
+  ["Algebra","Relations, Functions, Group Theory, Lagrange's Theorem, Inequalities, Complex Numbers, Theory of Equations"],
+  ["Linear Algebra","Matrices, Determinants, Vector Spaces, Quotient Spaces, Linear Transformations, Eigenvalues, Inner-Product Spaces, Cayley–Hamilton"],
+  ["Analysis","Well-ordering, Countability, Topology on ℝ, Sequences, Limits, Series, Compact Sets, Continuous Functions, Differentiation, Power Series, Metric Spaces"],
+  ["Analytical Geometry","Conics, 3D Geometry: Planes, Lines, Spheres, Quadrics"],
+  ["Vector Algebra","Vector Products, Solutions of Vector Equations"],
+  ["Mechanics","S.H.M., Planar Motion, Central Forces and Orbits"],
+  ["Differential Eqns","First Order ODE, Higher Order ODE, PDE, Sturm–Liouville Problems, Series Solutions, Laplace Transform"],
+  ["Optimization","L.P.P., Simplex Method, Duality, Transportation Problems"],
+  ["Calculus Apps","Tangents, Normals, Curvature, Envelopes, Singular Points"]
+];
+document.getElementById("cwGrid").innerHTML = cw.map(function(c){
+  return '<div class="cw-card card bar-gold"><p class="cw-title">'+c[0]+'</p><p class="cw-items">'+c[1]+'</p></div>';
+}).join("");
+
+/* ── Scroll progress + active nav ─────────────────────────────────── */
+var navLinks = document.querySelectorAll(".nav-link");
+var sectionIds = ["home","about","timeline","projects","skills","contact"];
+var sections = sectionIds.map(function(id){ return document.getElementById(id); });
+
+function onScroll() {
+  var max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+  var bar = document.getElementById("prog");
+  bar.style.width = pct + "%";
+  bar.setAttribute("aria-valuenow", Math.round(pct));
+  var y = window.scrollY + window.innerHeight / 3;
+  var activeId = "home";
+  for (var i = 0; i < sections.length; i++) {
+    var s = sections[i];
+    if (s && s.offsetTop <= y && s.offsetTop + s.offsetHeight > y) { activeId = s.id; break; }
+  }
+  navLinks.forEach(function(l) {
+    var on = l.getAttribute("href") === "#" + activeId;
+    if (on) { l.classList.add("active"); } else { l.classList.remove("active"); }
+  });
+}
+window.addEventListener("scroll", onScroll, {passive:true});
+
+/* ── Fade-up ───────────────────────────────────────────────────────── */
+if ("IntersectionObserver" in window) {
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, {threshold: 0.06});
+  document.querySelectorAll(".fade-up").forEach(function(el){ io.observe(el); });
+} else {
+  document.querySelectorAll(".fade-up").forEach(function(el){ el.classList.add("in"); });
+}
+
+/* ── Timeline dot responsive fix ──────────────────────────────────── */
+function fixDots() {
+  var isMd = window.innerWidth >= 768;
+  document.querySelectorAll(".tl-dot").forEach(function(d){ d.style.left = isMd ? "-14px" : "-21px"; });
+}
+fixDots();
+window.addEventListener("resize", fixDots, {passive:true});
+</script>
+</body>
+</html>
